@@ -1,0 +1,50 @@
+.dashboard-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+/* Media Queries Personalizadas */
+@media (max-width: 992px) {
+    .dashboard-card {
+        padding: 2rem 1rem;
+    }
+
+    .content h2.etiqueta {
+        font-size: 1.5rem;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-card {
+        padding: 1.5rem 1rem;
+    }
+
+.content h2.etiqueta {
+        font-size: 1.3rem;
+    }
+
+.content h4 {
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-card {
+        padding: 1.25rem 0.5rem;
+    }
+
+    .content h2.etiqueta {
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .content h4 {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+}

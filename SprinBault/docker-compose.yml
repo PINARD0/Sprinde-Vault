@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # Servicio para la aplicación FastAPI
+  fastapi:
+    build: .
+    container_name: sprinbault_fastapi
+    ports:
+      - "8000:8000"  # Expone el puerto 8000 para acceder a la app
+    environment:
+      DB_HOST: mysql  # Cambiado de localhost a mysql
+      DB_USER: root
+      DB_PASSWORD: 1234
+      DB_NAME_SPRINDE: SprindeUserAuthDatabase
+      DB_NAME_MONEDERO: MonederoPW
+    depends_on:
+      mysql:
+        condition: service_healthy  # Espera a que MySQL esté listo
+
+  # Servicio para MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: sprinbault_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "3307:3306"  # Exponer el puerto 3306 para la base de datos
+    volumes:
+      - mysql_data:/var/lib/mysql  # Volumen para persistir los datos
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  mysql_data:

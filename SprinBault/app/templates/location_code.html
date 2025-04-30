@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Localizaciones | SprinVault{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="container-fluid py-2">
+    <h2 class="etiqueta mb-4 text-left p-2 fw-bold bg-gradient-etiqueta shadow"
+        style="border-top-right-radius: 50px; border-bottom-right-radius: 50px; max-width: 350px;">
+      Lista de Localizaciones
+    </h2>
+
+    {% if request.cookies.get('message') %}
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+      {{ request.cookies.get('message') }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+
+    <div class="card shadow p-2 bg-gradient-table">
+      <!-- Filtros -->
+      <div class="row gy-2 mb-4 p-2">
+        <div class=" col-xl-4 col-6">
+          <label for="idFilter" class="form-label">Filtrar por ID</label>
+          <input type="text" id="idFilter" onkeyup="filterByID()" placeholder="Escribe un ID" class="form-control form-control-sm">
+        </div>
+        <div class="col-xl-4 col-6">
+          <label for="nameFilter" class="form-label">Filtrar por Nombre</label>
+          <input type="text" id="nameFilter" onkeyup="filterByLocName()" placeholder="Escribe un nombre" class="form-control form-control-sm">
+        </div>
+      </div>
+
+      <!-- Tabla -->
+      <div class="card-body table-responsive p-0">
+        <table id="dataTable" class="table table-striped text-center mb-0">
+          <thead class="thead-light sticky-top">
+            <tr class="text-uppercase font-weight-bold">
+              <th>ID</th>
+              <th>Nombre</th>
+              {% if is_admin == 1 %}
+              <th>Acción</th>
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for lc in location_code %}
+            <tr>
+              <td class="td-color" data-label="ID">{{ lc.id }}</td>
+              <td class="td-color" data-label="Nombre">{{ lc.name }}</td>
+              {% if is_admin == 1 %}
+              <td class="td-color" data-label="Acción">
+                {% if location_status[lc.name] == 1 %}
+                  <button class="btn bg-gradient-warning btn-sm rounded-pill" onclick="toggleHardware('{{ lc.name }}', false)">Desactivar</button>
+                {% elif location_status[lc.name] == 0 %}
+                  <button class="btn btn-success btn-sm rounded-pill" onclick="toggleHardware('{{ lc.name }}', true)">Activar</button>
+                  <form action="/delete_location_code" method="post" style="display:inline;" onsubmit="return confirmDelete('{{ lc.id }}', '{{ lc.name }}')">
+                    <input type="hidden" name="id" value="{{ lc.id }}">
+                    <button type="submit" class="btn bg-gradient-danger btn-sm rounded-pill">Eliminar</button>
+                  </form>
+                {% else %}
+                  <span class="text-muted">No hay registros...</span>
+                  <form action="/delete_location_code" method="post" style="display:inline;" onsubmit="return confirmDelete('{{ lc.id }}', '{{ lc.name }}')">
+                    <input type="hidden" name="id" value="{{ lc.id }}">
+                    <button type="submit" class="btn bg-gradient-danger btn-sm rounded-pill">Eliminar</button>
+                  </form>
+                {% endif %}
+              </td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Botones -->
+      <div class="rounded p-2 mx-auto" style="max-width: 800px;">
+        <div class="d-flex flex-wrap justify-content-center flex-sm-row flex-column-xs gap-2-xs">
+          {% if is_admin == 1 %}
+          <a href="/insert_location_code" class="btn btn-primary btn-lg px-4 shadow-sm mx-1 rounded-left-lg">
+            <i class="fas fa-plus me-2"></i> Añadir
+          </a>
+          {% endif %}
+          <a href="/dashboard" class="btn btn-dark border btn-lg px-4 shadow-sm mx-1 rounded-right-lg">
+            <i class="fas fa-arrow-left me-2"></i> Volver
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para eliminar localización -->
+    <div class="modal fade" id="deleteLocationCodeModal" tabindex="-1" aria-labelledby="deleteLocationCodeLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-sm">
+          <div class="modal-header bg-gradient-danger text-white">
+            <h5 class="modal-title">Confirmar Eliminación</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="password" id="deleteLocationCodePassword" class="form-control rounded-pill" placeholder="Contraseña maestra">
+            <div id="deleteLocationCodeError" class="text-danger mt-2 d-none">Contraseña incorrecta.</div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-outline-secondary rounded-pill" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn bg-gradient-danger rounded-pill" onclick="confirmDeleteLocationCode()">Confirmar eliminación</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/filter.js"></script>
+<script src="/static/js/location_codeScript.js"></script>
+{% endblock %}

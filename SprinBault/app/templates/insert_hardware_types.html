@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Agregar Tipo de Hardware | SprinVault{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow-lg bg-gradient-table" style="width: 100%; max-width: 480px; border-radius: 1rem;">
+
+      <h2 class="etiqueta mb-4 text-left p-2 fw-bold bg-gradient-etiqueta shadow"
+          style="border-top-right-radius: 50px; border-bottom-right-radius: 50px; max-width: 410px;">
+        Agregar Tipo de Hardware
+      </h2>
+
+      <!-- Mensaje de éxito -->
+      {% if request.query_params.get("success") == "true" %}
+      <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        Tipo de Hardware agregado exitosamente.
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+
+      <!-- Mensaje de error -->
+      {% if request.query_params.get("error") == "exists" %}
+      <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        El tipo de hardware ya existe.
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+
+      <!-- Formulario -->
+      <form action="/insert_hardware_types" method="post">
+        <div class="mb-4">
+          <label for="type_name" class="form-label fw-bold">Nombre del Tipo de Hardware</label>
+          <input type="text" id="type_name" name="type_name" class="form-control form-control-lg rounded" required placeholder="Ej. Servidor, Router, etc.">
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-center flex-wrap">
+          <button type="submit" class="btn bg-gradient-success text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill">
+            <i class="fas fa-save me-2"></i> Guardar
+          </button>
+          <a href="/hardware_types" class="btn bg-gradient-danger text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill">
+            <i class="fas fa-times me-2"></i> Cancelar
+          </a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<!-- Ocultar alertas después de 3 segundos -->
+<script src="/static/js/insert_hardware_typesScript.js"></script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Registrar Usuario | SprinVault{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow-lg bg-gradient-table" style="width: 100%; max-width: 450px; border-radius: 1rem;">
+      
+      <h2 class="etiqueta mb-4 text-left p-2 fw-bold bg-gradient-etiqueta shadow" style="border-top-right-radius: 50px; border-bottom-right-radius: 50px; max-width: 270px;">Registrar Usuario</h2>
+
+      <!-- Mensajes de error -->
+      {% if request.query_params.get("error") == "password_mismatch" %}
+      <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        Las contraseñas no coinciden.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+
+      {% if request.query_params.get("error") == "email_exists" %}
+      <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        El correo electrónico ya está registrado.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+
+      <!-- Formulario -->
+      <form action="/register" method="post">
+        <div class="mb-3">
+          <label for="email" class="form-label fw-bold">Correo Electrónico</label>
+          <input type="email" id="email" name="email" class="form-control form-control-lg rounded" required placeholder="usuario@correo.com">
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label fw-bold">Contraseña</label>
+          <input type="password" id="password" name="password" class="form-control form-control-lg rounded" required placeholder="••••••••">
+        </div>
+
+        <div class="mb-4">
+          <label for="confirm_password" class="form-label fw-bold">Confirmar Contraseña</label>
+          <input type="password" id="confirm_password" name="confirm_password" class="form-control form-control-lg rounded" required placeholder="••••••••">
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-center flex-wrap">
+          <button type="submit" class="btn bg-gradient-success text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill">
+            <i class="fas fa-user-plus me-2"></i> Confirmar
+          </button>
+          <a href="/users" class="btn bg-gradient-danger text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill">
+            <i class="fas fa-times me-2"></i> Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

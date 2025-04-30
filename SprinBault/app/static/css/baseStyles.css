@@ -1,0 +1,196 @@
+.nav-item {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.bg-gradient-custom {
+    background: linear-gradient(135deg, lightsteelblue, rgb(179, 200, 218), rgb(205, 205, 236));
+}
+
+.bg-gradient-etiqueta {
+    background: linear-gradient(160deg, rgb(184, 198, 236),rgb(158, 176, 236));
+}
+
+.bg-gradient-table {
+    background: linear-gradient(153deg, #d6d6d6, #e0e0e0, #d3d3d3);
+}
+
+.td-color {
+    background-color: ghostwhite;
+}
+
+.btn {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.etiqueta {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.etiqueta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+
+/* Media queries para las tablas */
+
+@media (min-width:1100px) {
+    .card-table__mobile-title {
+        display: none;
+    }
+}
+
+@media (max-width: 1100px) {
+    /* Aseguramos que la tabla ocupe todo el ancho y separe bien las "cards" */
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 20px;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 20px;
+        padding: 20px;
+        scroll-snap-type: x mandatory;
+        /* Opcional: personalizar la apariencia del scrollbar */
+        -ms-overflow-style: none; /* IE y Edge */
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
+    }
+    tbody::-webkit-scrollbar {
+        height: 8px;
+    }
+    tbody::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 4px;
+    }
+    /* Cada fila se muestra como una card */
+    tr {
+        display: block;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 260px;
+        scroll-snap-align: start;
+        padding: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: left;
+    }
+
+    /* Efecto hover para dar sensación de interactividad */
+    tr:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Cada celda se convierte en un bloque con separación interna */
+    td {
+        display: block;
+        margin-bottom: 12px;
+        text-align: left;
+        position: relative;
+        font-size: 0.9rem;
+        color: #333;
+        text-align: left !important;
+    }
+
+    td:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Etiqueta superior para cada celda usando el atributo data-label */
+    td::before {
+        content: attr(data-label) ":";
+        display: block;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #777;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        text-align: left !important;
+    }
+
+    /* Si la celda no tiene data-label, no se muestra el pseudo-elemento */
+    td:not([data-label])::before {
+        display: none;
+    }
+}
+
+
+/* Media queries para los botones */
+
+/* Bordes redondeados solo en pantallas >= 576px */
+@media (min-width: 576px) {
+    .rounded-left-lg {
+        border-top-left-radius: 50px !important;
+        border-bottom-left-radius: 50px !important;
+    }
+
+    .rounded-right-lg {
+        border-top-right-radius: 50px !important;
+        border-bottom-right-radius: 50px !important;
+    }
+}
+
+/* Botones en columna y con margen inferior solo en pantallas <= 576px */
+@media (max-width: 576px) {
+    .flex-column-xs {
+        flex-direction: column !important;
+    }
+
+    .gap-2-xs > * {
+        margin-bottom: 0.5rem;
+    }
+
+    .gap-2-xs > *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+
+/* -- Plantilla de Usuarios -- */
+
+/* Bordes redondeados solo en pantallas >= 768px */
+@media (min-width: 768px) {
+    .rounded-left-lg-users {
+        border-top-left-radius: 50px !important;
+        border-bottom-left-radius: 50px !important;
+    }
+
+    .rounded-right-lg-users {
+        border-top-right-radius: 50px !important;
+        border-bottom-right-radius: 50px !important;
+    }
+}
+
+/* Botones en columna y con margen inferior solo en pantallas < 768px */
+@media (max-width: 768px) {
+    .flex-column-md {
+        flex-direction: column !important;
+    }
+
+    .gap-2-md > * {
+        margin-bottom: 0.5rem;
+    }
+
+    .gap-2-md > *:last-child {
+        margin-bottom: 0;
+    }
+}

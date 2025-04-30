@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Sistemas | SprinVault{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="container-fluid py-2">
+    <h2 class="etiqueta mb-4 text-left p-2 fw-bold bg-gradient-etiqueta shadow"
+        style="border-top-right-radius: 50px; border-bottom-right-radius: 50px; max-width: 270px;">
+      Lista de Sistemas
+    </h2>
+
+    {% if request.cookies.get('message') %}
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+      {{ request.cookies.get('message') }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+
+    <div class="card shadow p-2 bg-gradient-table">
+      <!-- Filtros -->
+      <div class="row gy-2 mb-4 p-2">
+        <div class="col-xl-4 col-6">
+          <label for="emailFilter" class="form-label">Filtrar por correo</label>
+          <input type="text" id="emailFilter" onkeyup="filterByEmail()" placeholder="Ej. usuario@email.com"
+            class="form-control form-control-sm">
+        </div>
+        <div class="col-xl-4 col-6">
+          <label for="groupFilter" class="form-label">Filtrar por grupo</label>
+          <select id="groupFilter" onchange="filterByGroup()" class="form-control form-control-sm">
+            <option value="">Todos</option>
+            {% for grupo in grupos %}
+            <option value="{{ grupo }}">{{ grupo }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <!-- Tabla -->
+      <div class="card-body table-responsive p-0">
+        <table id="dataTable" class="table table-striped align-middle text-center mb-0">
+          <thead class="thead-light sticky-top">
+            <tr class="text-uppercase font-weight-bold">
+              <th>ID</th>
+              <th>Email</th>
+              <th>Grupo</th>
+              <th>Contraseña</th>
+              {% if is_admin %}
+              <th>Acción</th>
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for email in emails %}
+            <tr>
+              <td class="td-color" data-label="ID">{{ email.id }}</td>
+              <td class="td-color" data-label="Email">{{ email.email }}</td>
+              <td class="td-color" data-label="Grupo">{{ email.grupo }}</td>
+              <td class="td-color" data-label="Contraseña">
+                <button class="btn bg-gradient-primary btn-sm rounded-pill" onclick="openModal('{{ email.id }}')">
+                  <i class="fas fa-eye"></i> Mostrar
+                </button>
+              </td>
+              {% if is_admin %}
+              <td class="td-color" data-label="Acción">
+                <button class="btn bg-gradient-danger btn-sm rounded-pill" onclick="deleteEmail('{{ email.id }}')">
+                  <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+              </td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Botones -->
+      <div class="rounded p-2 mx-auto" style="max-width: 800px;">
+        <div class="d-flex flex-wrap justify-content-center flex-sm-row flex-column-xs gap-2-xs">
+          {% if is_admin == 1 %}
+          <a href="/insert_email" class="btn bg-gradient-primary btn-lg px-4 shadow-sm mx-1 rounded-left-lg">
+            <i class="fas fa-plus me-2"></i> Añadir
+          </a>
+          {% endif %}
+          <a href="/dashboard" class="btn bg-gradient-dark border btn-lg px-4 shadow-sm mx-1 rounded-right-lg">
+            <i class="fas fa-arrow-left me-2"></i> Volver
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para mostrar contraseña -->
+    <div id="passwordModal" class="modal fade" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-sm">
+          <div class="modal-header bg-gradient-primary text-white">
+            <h5 class="modal-title">Mostrar Contraseña</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <label for="masterPassword" class="form-label">Introduce la contraseña maestra:</label>
+            <input type="password" id="masterPassword" class="form-control rounded-pill" placeholder="Ingresa la contraseña">
+            <button class="btn bg-gradient-primary mt-3 rounded-pill" onclick="sendPassword()">Enviar</button>
+            <div id="emailPasswordDisplay" class="mt-3 text-center font-weight-semibold"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para eliminar sistema -->
+    <div class="modal fade" id="deleteEmailModal" tabindex="-1" aria-labelledby="deleteEmailLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-sm">
+          <div class="modal-header bg-gradient-danger text-white">
+            <h5 class="modal-title">Confirmar Eliminación</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="password" id="deleteEmailPassword" class="form-control rounded-pill"
+              placeholder="Contraseña maestra">
+            <div id="deleteEmailError" class="text-danger mt-2 d-none">Contraseña incorrecta.</div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-outline-secondary rounded-pill" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn bg-gradient-danger rounded-pill" onclick="confirmDeleteEmail()">Confirmar eliminación</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/filter.js"></script>
+
+<script src="/static/js/emailsScript.js"></script>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Modificar Tipo de Hardware | SprinVault{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow-lg bg-gradient-table" style="width: 100%; max-width: 500px; border-radius: 1rem;">
+
+      <h2 class="etiqueta mb-4 text-left p-2 fw-bold bg-gradient-etiqueta shadow"
+          style="border-top-right-radius: 50px; border-bottom-right-radius: 50px; max-width: 430px;">
+        Modificar Tipo de Hardware
+      </h2>
+
+    <!-- Alertas -->
+    <div id="successMessage" class="alert alert-success alert-dismissible fade show text-center d-none" role="alert">
+        Tipo de hardware modificado con éxito
+        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div id="errorMessage" class="alert alert-danger alert-dismissible fade show text-center d-none" role="alert">
+        El tipo de hardware ya existe. Por favor, ingrese un nombre diferente.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+      <form id="form_modify_type" method="post" action="/modify_hardware_type">
+        <!-- Selector del tipo existente -->
+        <div class="mb-4">
+          <label for="existing_type" class="form-label fw-bold">Tipo de Hardware Existente</label>
+          <select name="existing_type" id="existing_type" class="form-control form-control-lg rounded" required>
+            <option value="" disabled selected>Seleccionar Tipo Existente</option>
+            {% for type in hardware_types %}
+              <option value="{{ type.type_id }}">{{ type.type_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Nuevo nombre -->
+        <div class="mb-4">
+          <label for="new_type" class="form-label fw-bold">Nuevo Nombre del Tipo</label>
+          <input type="text" name="new_type" id="new_type" class="form-control form-control-lg rounded" placeholder="Ej. Router, Firewall..." required>
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-center flex-wrap">
+          <button type="submit" class="btn bg-gradient-success text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill">
+            <i class="fas fa-save me-2"></i> Guardar
+          </button>
+          <a href="/hardware_types" class="btn bg-gradient-danger text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill">
+            <i class="fas fa-times me-2"></i> Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Script de validación y respuesta -->
+<script src="/static/js/modify_hardware_typesScript.js"></script>
+{% endblock %}

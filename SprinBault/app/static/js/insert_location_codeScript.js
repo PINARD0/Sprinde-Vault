@@ -1,0 +1,8 @@
+window.onload = function() {
+    setTimeout(function() {
+        let alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.style.display = 'none';
+        });
+    }, 3000);  // Ocultar alertas después de 3 segundos
+};

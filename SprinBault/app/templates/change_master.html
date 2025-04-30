@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Cambiar Contraseña Maestra | SprinVault{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow-lg bg-gradient-table" style="width: 100%; max-width: 500px; border-radius: 1rem;">
+      
+      <h2 class="etiqueta mb-4 text-left p-2 fw-bold bg-gradient-etiqueta shadow" style="border-top-right-radius: 50px; border-bottom-right-radius: 50px; max-width: 440px;">
+        Cambiar Contraseña Maestra
+      </h2>
+
+      {% if error %}
+      <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        {{ error }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+
+      <form action="/change-master-password" method="post">
+        <input type="hidden" name="old_password" value="{{ old_password }}">
+
+        <div class="mb-3">
+          <label for="new_password" class="form-label fw-bold">Nueva Contraseña Maestra:</label>
+          <input type="password" id="new_password" name="new_password" class="form-control form-control-lg rounded" required placeholder="••••••••">
+        </div>
+
+        <div class="mb-4">
+          <label for="confirm_password" class="form-label fw-bold">Confirmar Nueva Contraseña:</label>
+          <input type="password" id="confirm_password" name="confirm_password" class="form-control form-control-lg rounded" required placeholder="••••••••">
+        </div>
+
+        <div class="d-flex justify-content-center flex-wrap">
+          <button type="submit" class="btn bg-gradient-success text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill">
+            <i class="fas fa-key me-2"></i> Cambiar Contraseña
+          </button>
+          <a href="/dashboard" class="btn bg-gradient-danger text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill" role="button">
+            <i class="fas fa-times me-2"></i> Cancelar
+          </a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/change_masterScript.js"></script>
+{% endblock %}

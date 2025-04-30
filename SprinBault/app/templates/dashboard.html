@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | SprinVault{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="container-fluid py-4">
+
+    <!-- Encabezado -->
+    <div class="text-center mb-5">
+      <h1 class="etiqueta mb-4 text-left p-2 fw-bold bg-gradient-etiqueta shadow"
+          style="border-top-right-radius: 50px; border-bottom-right-radius: 50px; max-width: 330px;">
+        Panel de Control
+      </h1>
+    </div>
+
+    <!-- Panel dividido -->
+    <div class="row justify-content-center align-items-start">
+
+      <!-- Columna de Gestión -->
+      <div class="col-12 col-lg-7 mb-4">
+        <h4 class="fw-bold mb-4"><i class="fas fa-tools me-2"></i> Gestión</h4>
+        <div class="row g-4">
+          {% set gestion_cards = [
+            {"url": "/hardware", "icon": "server", "title": "Hardware", "bg": "info"},
+            {"url": "/hardware_types", "icon": "layer-group", "title": "Tipos de Hardware", "bg": "info"},
+            {"url": "/location_code", "icon": "map-marker-alt", "title": "Localizaciones", "bg": "info"},
+            {"url": "/emails", "icon": "desktop", "title": "Sistemas", "bg": "info"}
+          ] %}
+
+          {% for card in gestion_cards %}
+          <div class="col-12 col-sm-6">
+            <a href="{{ card.url }}" class="text-decoration-none">
+              <div class="card dashboard-card bg-gradient-{{ card.bg }} text-white text-center py-5 shadow-sm border-0 shadow-sm">
+                <i class="fas fa-{{ card.icon }} fa-3x mb-3"></i>
+                <h5 class="fw-bold">{{ card.title }}</h5>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Espaciador -->
+      <div class="col-12 col-lg-1 d-none d-lg-block"></div>
+
+      <!-- Columna de Registros -->
+      <div class="col-12 col-lg-4">
+        <h4 class="fw-bold mb-4"><i class="fas fa-clipboard-list me-2"></i> Registros</h4>
+        <a href="/users" class="text-decoration-none">
+          <div class="card dashboard-card bg-gradient-primary text-white text-center py-5 shadow-sm border-0">
+            <i class="fas fa-users fa-3x mb-3"></i>
+            <h5 class="fw-bold">Usuarios</h5>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Botón de logout -->
+    <div class="text-center mt-5">
+      <button class="btn bg-gradient-danger btn-lg px-5 py-2 shadow rounded-pill" onclick="logout()">
+        <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+      </button>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/dashboardStyles.css"> </link>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/dashboardScript.js"></script>
+{% endblock %}

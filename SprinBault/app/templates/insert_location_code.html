@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Agregar Location Code | SprinVault{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow-lg bg-gradient-table" style="width: 100%; max-width: 450px; border-radius: 1rem;">
+
+      <h2 class="etiqueta mb-4 text-left p-2 fw-bold bg-gradient-etiqueta shadow" style="border-top-right-radius: 50px; border-bottom-right-radius: 50px; max-width: 360px;">
+        Agregar Location Code
+      </h2>
+
+      <!-- Mensajes de error y éxito -->
+      {% if request.query_params.get("success") == "true" %}
+      <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        Location Code agregado exitosamente.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% elif request.query_params.get("error") == "exists" %}
+      <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        El Location Code ya existe.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+
+      <!-- Formulario -->
+      <form action="/insert_location_code" method="post">
+        <div class="mb-3">
+          <label for="id" class="form-label fw-bold">ID del Location Code</label>
+          <input type="text" name="id" id="id" class="form-control form-control-lg rounded" required placeholder="Ej: A80">
+        </div>
+
+        <div class="mb-4">
+          <label for="name" class="form-label fw-bold">Nombre del Location Code</label>
+          <input type="text" name="name" id="name" class="form-control form-control-lg rounded" required placeholder="Ej: Ariel">
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-center flex-wrap">
+          <button type="submit" class="btn bg-gradient-success text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill">
+            <i class="fas fa-save me-2"></i> Guardar
+          </button>
+          <a href="/location_code" class="btn bg-gradient-danger text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill" role="button">
+            <i class="fas fa-times me-2"></i> Cancelar
+          </a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/insert_location_codeScript.js"></script>
+{% endblock %}

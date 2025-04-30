@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Tipos de Hardware | SprinVault{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="container-fluid py-2">
+    <h2 class="etiqueta mb-4 text-left p-2 fw-bold bg-gradient-etiqueta shadow"
+        style="border-top-right-radius: 50px; border-bottom-right-radius: 50px; max-width: 420px;">
+      Lista de Tipos de Hardware
+    </h2>
+
+    {% if request.cookies.get('message') %}
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+      {{ request.cookies.get('message') }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+
+    <div class="card shadow p-2 bg-gradient-table">
+      <!-- Filtros -->
+      <div class="row gy-2 mb-4 p-2">
+        <div class="col-xl-4 col-6">
+          <label for="idFilter" class="form-label">Filtrar por ID</label>
+          <input type="text" id="idFilter" onkeyup="filterByID()" placeholder="Escribe un ID" class="form-control form-control-sm">
+        </div>
+        <div class="col-xl-4 col-6">
+          <label for="nameFilter" class="form-label">Filtrar por Nombre</label>
+          <input type="text" id="nameFilter" onkeyup="filterByHwName()" placeholder="Escribe un nombre" class="form-control form-control-sm">
+        </div>
+      </div>
+
+      <!-- Tabla -->
+      <div class="card-body table-responsive p-0">
+        <table id="dataTable" class="table table-hover table-striped text-center mb-0">
+          <thead class="thead-light sticky-top">
+            <tr class="text-uppercase font-weight-bold">
+              <th>ID</th>
+              <th>Nombre</th>
+              <!--{% if is_admin == 1 %}
+              <th>Acción</th>
+              {% endif %}-->
+            </tr>
+          </thead>
+          <tbody>
+            {% for type in hardware_types %}
+            <tr>
+              <td class="td-color" data-label="ID">{{ type.type_id }}</td>
+              <td class="td-color" data-label="Nombre">{{ type.type_name }}</td>
+              <!--{% if is_admin == 1 %}
+              <td class="td-color">
+                <form action="/delete_hardware_type" method="post" style="display:inline;" id="deleteForm{{ type.type_id }}">
+                  <input type="hidden" name="type_id" value="{{ type.type_id }}">
+                  <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ type.type_id }}')">Eliminar</button>
+                </form>
+              </td>
+              {% endif %}-->
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Botones -->
+      <div class="rounded p-2 mx-auto" style="max-width: 800px;">
+        <div class="d-flex flex-wrap justify-content-center flex-sm-row flex-column-xs gap-2-xs">
+          {% if is_admin == 1 %}
+          <a href="/insert_hardware_types" class="btn bg-gradient-primary btn-lg px-4 shadow-sm mx-1 rounded-left-lg">
+            <i class="fas fa-plus me-2"></i> Añadir
+          </a>
+          <a href="/modify_hardware_types" class="btn bg-gradient-warning btn-lg px-4 shadow-sm mx-1">
+            <i class="fas fa-edit me-2"></i> Modificar
+          </a>
+          {% endif %}
+          <a href="/dashboard" class="btn bg-gradient-dark border btn-lg px-4 shadow-sm mx-1 rounded-right-lg">
+            <i class="fas fa-arrow-left me-2"></i> Volver
+          </a>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/filter.js"></script>
+
+<script src="/static/js/hardware_typesScript.js"></script>
+{% endblock %}

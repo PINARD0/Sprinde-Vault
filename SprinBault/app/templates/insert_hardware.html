@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Insertar Hardware | SprinVault{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow-lg bg-gradient-table" style="width: 100%; max-width: 900px; border-radius: 1rem;">
+
+      <h2 class="etiqueta mb-4 text-left p-2 fw-bold bg-gradient-etiqueta shadow" style="border-top-right-radius: 50px; border-bottom-right-radius: 50px; max-width: 390px;">
+        Insertar Nuevo Hardware
+      </h2>
+
+      <!-- Mensajes de error o éxito -->
+      {% if request.query_params.get("error") %}
+      <div class="alert alert-danger alert-dismissible fade show text-center" id="alertMessage" role="alert">
+        {% if request.query_params.get("error") == "ip_exists" %}
+          La IP ya está registrada en la base de datos.
+        {% elif request.query_params.get("error") == "master_password_incorrect" %}
+          La contraseña maestra es incorrecta.
+        {% elif request.query_params.get("error") == "password_mismatch" %}
+          Las contraseñas no coinciden.
+        {% endif %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+
+      {% if request.query_params.get("success") == "true" %}
+      <div class="alert alert-success alert-dismissible fade show text-center" id="alertMessage" role="alert">
+        Hardware insertado exitosamente.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+
+      <!-- Formulario en dos columnas -->
+      <form id="hardwareForm" action="/insert" method="post">
+        <div class="row">
+          <!-- Columna Izquierda -->
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="codeName" class="form-label fw-bold">CodeName:</label>
+              <select name="codeName" id="codeName" class="form-control form-control-lg rounded" required>
+                <option value="" disabled selected>Seleccionar un nombre</option>
+                {% for location in location_codes %}
+                  <option value="{{ location.id }}" data-name="{{ location.name }}">{{ location.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="IP" class="form-label fw-bold">IP:</label>
+              <input type="text" name="IP" class="form-control form-control-lg rounded" required placeholder="Ej: 192.168.0.1">
+            </div>
+
+            <div class="mb-3">
+              <label for="nombre" class="form-label fw-bold">Nombre:</label>
+              <input type="text" name="nombre" class="form-control form-control-lg rounded" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="hardware_type_id" class="form-label fw-bold">Tipo de Hardware:</label>
+              <select name="hardware_type_id" class="form-control form-control-lg rounded" required>
+                {% for type in hardware_types %}
+                  <option value="{{ type.type_id }}">{{ type.type_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <!-- Columna Derecha -->
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="password" class="form-label fw-bold">Contraseña:</label>
+              <input type="password" name="password" class="form-control form-control-lg rounded" required placeholder="••••••••">
+            </div>
+
+            <div class="mb-3">
+              <label for="confirm_password" class="form-label fw-bold">Confirmar Contraseña:</label>
+              <input type="password" name="confirm_password" class="form-control form-control-lg rounded" required placeholder="••••••••">
+            </div>
+
+            <div class="mb-3">
+              <label for="localizacion" class="form-label fw-bold">Localización:</label>
+              <input type="text" name="localizacion" id="localizacion" class="form-control form-control-lg rounded" required readonly>
+            </div>
+
+            <div class="mb-4">
+              <label for="master_password" class="form-label fw-bold">Contraseña Maestra:</label>
+              <input type="password" name="master_password" class="form-control form-control-lg rounded" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-center flex-wrap">
+          <button type="submit" class="btn bg-gradient-success text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill">
+            <i class="fas fa-save me-2"></i> Guardar
+          </button>
+          <a href="/hardware" class="btn bg-gradient-danger text-white btn-lg shadow-sm px-4 mx-1 mb-2 rounded-pill">
+            <i class="fas fa-times me-2"></i> Cancelar
+          </a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<script src="/static/js/insert_hardwareScript.js"></script>
+{% endblock %}

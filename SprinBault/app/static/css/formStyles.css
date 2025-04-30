@@ -1,0 +1,29 @@
+.bg-gradient-custom {
+    background: linear-gradient(135deg, lightsteelblue, rgb(179, 200, 218), rgb(205, 205, 236));
+}
+
+.bg-gradient-etiqueta {
+    background: linear-gradient(160deg, rgb(205, 215, 243),rgb(133, 156, 230));
+}
+
+.bg-gradient-table {
+    background: linear-gradient(153deg, #d6d6d6, #e0e0e0, #d3d3d3);
+}
+
+.etiqueta {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.etiqueta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+}
